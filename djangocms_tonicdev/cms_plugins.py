@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import urllib2
+
 from django.conf import settings
 
 from cms.models import CMSPlugin
@@ -26,10 +28,15 @@ class TonicNotebookPlugin(CMSPluginBase):
 
     def icon_src(self, instance):
         # //img.shields.io/badge/tonic-notebook-green.svg'
-        return settings.STATIC_URL + 'djangocms_tonicdev/tonic-notebook-green.svg'
+        # return settings.STATIC_URL + 'djangocms_tonicdev/tonic-notebook-green.svg'
+        return u'//img.shields.io/badge/%s%%20%s-%s-green.svg' % (
+            TonicNotebookPlugin.module,
+            TonicNotebookPlugin.name,
+            urllib2.quote(instance.ident()),
+        )
 
     def icon_alt(self, instance):
-        return u'TonicNotebook: %s' % instance
+        return u'%s' % instance
 
 
 plugin_pool.register_plugin(TonicNotebookPlugin)
