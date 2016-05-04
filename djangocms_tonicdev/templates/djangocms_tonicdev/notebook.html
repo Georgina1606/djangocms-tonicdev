@@ -9,6 +9,7 @@
 </div>
 {% addtoblock "js" %}
 <script>
+console.log("{{ instance.ident }}", "{{ instance.readonly }}");
 window.{{ instance.variable_name }} = Tonic.createNotebook({
     element: document.getElementById("{{ instance.variable_name }}_element"),
     source: document.getElementById("{{ instance.variable_name }}_source").textContent,
