@@ -1,0 +1,17 @@
+{% load i18n cms_tags staticfiles sekizai_tags %}
+{% addtoblock instance.script_block %}
+<script src="https://embed.tonicdev.com"></script>
+{% endaddtoblock %}
+<div id="tonic-notebook-{{ instance.id }}">
+</div>
+<div id="tonic-notebook-source-{{ instance.id }}" style="display:none;">
+{{ instance.code }}
+</div>
+{% addtoblock "js" %}
+<script>
+Tonic.createNotebook({
+    element: document.getElementById("tonic-notebook-{{ instance.id }}"),
+    source: document.getElementById("tonic-notebook-source-{{ instance.id }}").textContent
+})
+</script>
+{% endaddtoblock %}
