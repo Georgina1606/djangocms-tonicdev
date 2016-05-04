@@ -1,4 +1,5 @@
 ## djangocms-tonicdev
+[![Build Status](https://travis-ci.org/TigerND/djangocms-tonicdev.svg?branch=master)](https://travis-ci.org/TigerND/djangocms-tonicdev)
 
 A Tonicdev Editor plugin for Django CMS.
 
