@@ -42,6 +42,13 @@ class TonicNotebookPluginModel(CMSPlugin):
         verbose_name=_('Notebook config')
     )
 
+    name = models.CharField('Name',
+        null=True,
+        blank=True,
+        help_text=_(u'Name (optional)'),
+        max_length=32,
+    )
+
     code = models.TextField('Source code',
         blank=False,
         default='',
@@ -56,6 +63,12 @@ class TonicNotebookPluginModel(CMSPlugin):
 
     def script_block(self):
         return self.config.script_block if self.config else 'js'
+        
+    def ident(self):
+        return self.name if self.name else str(self.id)
+        
+    def variable_name(self):
+        return 'tonic_notebook_' + self.ident()
 
     def __str__(self):
         return _(u'TonicNotebook %(id)s') % {'id': self.id}

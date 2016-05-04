@@ -2,16 +2,19 @@
 {% addtoblock instance.script_block %}
 <script src="https://embed.tonicdev.com"></script>
 {% endaddtoblock %}
-<div id="tonic-notebook-{{ instance.id }}">
+<div id="{{ instance.variable_name }}_element">
 </div>
-<div id="tonic-notebook-source-{{ instance.id }}" style="display:none;">
+<div id="{{ instance.variable_name }}_source" style="display:none;">
 {{ instance.code }}
 </div>
 {% addtoblock "js" %}
 <script>
-Tonic.createNotebook({
-    element: document.getElementById("tonic-notebook-{{ instance.id }}"),
-    source: document.getElementById("tonic-notebook-source-{{ instance.id }}").textContent
+window.{{ instance.variable_name }} = Tonic.createNotebook({
+    element: document.getElementById("{{ instance.variable_name }}_element"),
+    source: document.getElementById("{{ instance.variable_name }}_source").textContent,
+    onURLChanged: function(notebook) {
+        console.log("Tonic Notebook {{ instance.ident }} URL:", notebook.URL);
+    }
 })
 </script>
 {% endaddtoblock %}
