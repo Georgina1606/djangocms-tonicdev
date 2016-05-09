@@ -2,20 +2,15 @@
 {% addtoblock instance.script_block %}
 <script src="https://embed.tonicdev.com"></script>
 {% endaddtoblock %}
-<div id="{{ instance.variable_name }}_element">
-</div>
-<div id="{{ instance.variable_name }}_source" style="display:none;">
-{{ instance.code }}
-</div>
+<div id="{{ instance.variable_name }}_element"></div>
+<script type='text/plain' id="{{ instance.variable_name }}_source" >{{ instance.code|safe }}</script>
+{% addtoblock "js" %}
+<script src="{% static 'djangocms_tonicdev/js/notebook.js' %}"></script>
+{% endaddtoblock %}
 {% addtoblock "js" %}
 <script>
-console.log("{{ instance.ident }}", "{{ instance.readonly }}");
-window.{{ instance.variable_name }} = Tonic.createNotebook({
-    element: document.getElementById("{{ instance.variable_name }}_element"),
-    source: document.getElementById("{{ instance.variable_name }}_source").textContent,
-    onURLChanged: function(notebook) {
-        console.log("Tonic Notebook {{ instance.ident }} URL:", notebook.URL);
-    }
-})
+window.djangocms_tonicdev_render(document.getElementById("{{ instance.variable_name }}_source").textContent, {{ instance.opts|safe }}, function(err, notebook) {
+    window.{{ instance.variable_name }} = notebook;
+});
 </script>
 {% endaddtoblock %}

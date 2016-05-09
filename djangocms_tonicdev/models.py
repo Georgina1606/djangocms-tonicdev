@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import json
+
 from cms.models import CMSPlugin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -57,7 +59,7 @@ class TonicNotebookPluginModel(CMSPlugin):
 
     readonly = models.BooleanField('Readonly',
         blank=False,
-        default=True,
+        default=False,
         help_text=_(u'Is readonly'),
     )
 
@@ -68,7 +70,15 @@ class TonicNotebookPluginModel(CMSPlugin):
         return self.name if self.name else str(self.id)
         
     def variable_name(self):
-        return 'tonic_notebook_' + self.ident()
+        return 'djangocms_tonicdev_' + self.ident()
+        
+    def opts(self):
+        result = {
+            'ident': self.ident(),
+            'variable_name': self.variable_name(),
+            'readonly': self.readonly,
+        }
+        return json.dumps(result)
 
     def __str__(self):
         return _(u'TonicNotebook %(id)s') % {'id': self.id}
