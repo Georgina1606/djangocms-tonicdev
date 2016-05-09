@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='djangocms-tonicdev',
-    version='0.1.5',
+    version='0.1.7',
     description='DjangoCMS Tonic Notebook',
     author='Aleksandr Zykov',
     author_email='tiger@vilijavis.lt',

@@ -19,6 +19,13 @@ class TonicNotebookConfigModel(models.Model):
         max_length=32,
     )
 
+    node_version = models.CharField('Node version',
+        null=True,
+        blank=True,
+        help_text=_(u'Provide a semver range that the node engine should satisfy, e.g. 0.12.x or > 4.0.0'),
+        max_length=32,
+    )
+
     script_block = models.CharField('Script block',
         null=False,
         blank=False,
@@ -57,14 +64,24 @@ class TonicNotebookPluginModel(CMSPlugin):
         help_text=_(u'Source code'),
     )
 
+    node_version = models.CharField('Node version',
+        null=True,
+        blank=True,
+        help_text=_(u'Provide a semver range that the node engine should satisfy, e.g. 0.12.x or > 4.0.0'),
+        max_length=32,
+    )
+
     readonly = models.BooleanField('Readonly',
         blank=False,
         default=False,
-        help_text=_(u'Is readonly'),
+        help_text=_(u'Create a notebook that can not be edited or run'),
     )
 
     def script_block(self):
-        return self.config.script_block if self.config else 'js'
+        return self.config.script_block
+        
+    def get_node_version(self):
+        return self.config.node_version if self.config.node_version else self.node_version
         
     def ident(self):
         return self.name if self.name else str(self.id)
@@ -76,6 +93,7 @@ class TonicNotebookPluginModel(CMSPlugin):
         result = {
             'ident': self.ident(),
             'variable_name': self.variable_name(),
+            'node_version': self.get_node_version(),
             'readonly': self.readonly,
         }
         return json.dumps(result)
